@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TUIControllerConfig",
+  "description": "Фізична схема конфігураційного файлу TUI-контролера автосимулятора",
+  "type": "object",
+  "properties": {
+    "config_version": {
+      "type": "string",
+      "description": "Версія структури конфігураційного файлу"
+    },
+    "user_settings": {
+      "type": "object",
+      "description": "Налаштування поточного користувача",
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "Унікальне ім'я гравця у системі",
+          "pattern": "^[a-zA-Z0-9_-]{3,30}$",
+          "minLength": 3,
+          "maxLength": 30
+        },
+        "active_profile": {
+          "type": "string",
+          "description": "Назва активного профілю калібрування"
+        }
+      },
+      "required": ["username", "active_profile"]
+    },
+    "device_settings": {
+      "type": "object",
+      "description": "Параметри підключеної USB-вебкамери",
+      "properties": {
+        "camera_id": {
+          "type": "integer",
+          "description": "Системний номер відеокамери",
+          "minimum": 0
+        },
+        "resolution": {
+          "type": "string",
+          "description": "Роздільна здатність відеопотоку",
+          "pattern": "^[0-9]{3,4}x[0-9]{3,4}$"
+        },
+        "fps": {
+          "type": "integer",
+          "description": "Частота кадрів вебкамери",
+          "minimum": 15,
+          "maximum": 120
+        }
+      },
+      "required": ["camera_id", "resolution", "fps"]
+    },
+    "calibration_profile": {
+      "type": "object",
+      "description": "Параметри калібрування ArUco-маркера",
+      "properties": {
+        "profile_name": {
+          "type": "string",
+          "description": "Назва профілю калібрування"
+        },
+        "created_at": {
+          "type": "string",
+          "description": "Дата та час створення профілю"
+        },
+        "aruco_marker_id": {
+          "type": "integer",
+          "description": "Цифровий код ArUco-маркера",
+          "minimum": 0,
+          "maximum": 250
+        },
+        "zero_offset_angle": {
+          "type": "number",
+          "description": "Значення кута нульового зсуву"
+        },
+        "sensitivity": {
+          "type": "number",
+          "description": "Коефіцієнт чутливості повороту",
+          "minimum": 0.1,
+          "maximum": 5.0
+        }
+      },
+      "required": ["profile_name", "aruco_marker_id", "zero_offset_angle", "sensitivity"]
+    },
+    "vjoy_output": {
+      "type": "object",
+      "description": "Параметри віртуального джойстика vJoy",
+      "properties": {
+        "device_id": {
+          "type": "integer",
+          "description": "Порядковий номер пристрою vJoy",
+          "minimum": 1,
+          "maximum": 16
+        },
+        "target_axis": {
+          "type": "string",
+          "description": "Назва віртуальної осі"
+        }
+      },
+      "required": ["device_id", "target_axis"]
+    }
+  },
+  "required": ["config_version", "user_settings", "device_settings", "calibration_profile", "vjoy_output"]
+}
